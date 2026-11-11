@@ -1,0 +1,25 @@
+{
+  "name": "@payments-kafka/antifraud",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Antifraud consumer: per-merchant fraud rules over pix.payments.v1, alerts to pix.fraud-alerts.v1.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@payments-kafka/consumer-runtime": "*"
+  },
+  "devDependencies": {
+    "testcontainers": "^12.2.1"
+  }
+}
