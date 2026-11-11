@@ -1,0 +1,42 @@
+# Environment variables and their defaults. Every SIMULATOR_* variable is
+# documented in services/simulator/README.md.
+server:
+  port: ${SERVER_PORT:8082}
+
+spring:
+  application:
+    name: simulator
+
+simulator:
+  mode: ${SIMULATOR_MODE:chaos}
+  rate-per-second: ${SIMULATOR_RATE_PER_SECOND:50}
+  merchants: ${SIMULATOR_MERCHANTS:20}
+  max-payments: ${SIMULATOR_MAX_PAYMENTS:0}
+  seed: ${SIMULATOR_SEED:42}
+  expire-rate: ${SIMULATOR_EXPIRE_RATE:0.15}
+  refund-rate: ${SIMULATOR_REFUND_RATE:0.05}
+  chaos:
+    duplicate-rate: ${SIMULATOR_CHAOS_DUPLICATE_RATE:0.05}
+    out-of-order-rate: ${SIMULATOR_CHAOS_OUT_OF_ORDER_RATE:0.02}
+    invalid-rate: ${SIMULATOR_CHAOS_INVALID_RATE:0.01}
+  fraud:
+    outlier-rate: ${SIMULATOR_FRAUD_OUTLIER_RATE:0.002}
+    burst-rate: ${SIMULATOR_FRAUD_BURST_RATE:0.001}
+    refund-spree-rate: ${SIMULATOR_FRAUD_REFUND_SPREE_RATE:0.001}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    topic: pix.payments.v1
+  payment-api:
+    base-url: ${PAYMENT_API_BASE_URL:http://localhost:8081}
+    initial-backoff: 200ms
+    max-backoff: 5s
+    request-timeout: 5s
+  stats-log-interval: 10s
+  # Start generating traffic as soon as the application is ready.
+  autostart: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
