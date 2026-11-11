@@ -457,12 +457,27 @@ export function createConsumerRuntime<const S extends SchemaName>(
       const lost = fns.assignmentLost();
       log.info({ partitions, count: partitions.length, lost }, 'partitions revoked');
       const pending: Promise<void>[] = [];
+      const pausedByUs: TopicPartition[] = [];
       for (const { topic, partition } of partitions) {
         const key = partitionKey(topic, partition);
+        if (resumeTimers.has(key)) pausedByUs.push({ topic, partition });
         clearTimeout(resumeTimers.get(key));
         resumeTimers.delete(key);
         const running = inFlight.get(key);
         if (running) pending.push(running);
+      }
+      // The client keeps paused partitions paused across a rebalance. Without
+      // its resume timer (cancelled above), a partition paused for a retry that
+      // is not due yet would stay paused forever if it is assigned to this
+      // member again (the eager protocol revokes everything on every
+      // rebalance). Resume it now: the uncommitted record is fetched again
+      // after the assignment and paused again if it is still not due.
+      for (const { topic, partition } of pausedByUs) {
+        try {
+          consumer?.resume([{ topic, partitions: [partition] }]);
+        } catch (error) {
+          log.warn({ topic, partition, err: errorMessage(error) }, 'could not resume revoked partition');
+        }
       }
       if (pending.length > 0) {
         let timer: NodeJS.Timeout | undefined;
