@@ -1,0 +1,47 @@
+[
+  {
+    "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e01",
+    "event_type": "payment.created",
+    "schema_version": 1,
+    "occurred_at": "2026-11-11T14:03:20.100Z",
+    "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+    "merchant_id": "merchant-007",
+    "sequence": 1,
+    "amount_cents": 4590,
+    "currency": "BRL"
+  },
+  {
+    "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e02",
+    "event_type": "payment.confirmed",
+    "schema_version": 1,
+    "occurred_at": "2026-11-11T14:03:27.512Z",
+    "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+    "merchant_id": "merchant-007",
+    "sequence": 2,
+    "amount_cents": 4590,
+    "currency": "BRL"
+  },
+  {
+    "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e03",
+    "event_type": "payment.refunded",
+    "schema_version": 1,
+    "occurred_at": "2026-11-11T14:20:02.000Z",
+    "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+    "merchant_id": "merchant-007",
+    "sequence": 3,
+    "amount_cents": 4590,
+    "currency": "BRL"
+  },
+  {
+    "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e04",
+    "event_type": "payment.expired",
+    "schema_version": 1,
+    "occurred_at": "2026-11-11T14:33:20.100Z",
+    "payment_id": "7c1b1f6e-2f5d-4a0b-9a3e-6d2b8e4c1a90",
+    "merchant_id": "merchant-012",
+    "sequence": 2,
+    "amount_cents": 12000,
+    "currency": "BRL",
+    "some_future_field": "consumers must ignore unknown fields"
+  }
+]

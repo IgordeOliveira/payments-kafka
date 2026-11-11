@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://payments-kafka.local/contracts/fraud-alert.v1.schema.json",
+  "title": "FraudAlert",
+  "description": "Value of topic pix.fraud-alerts.v1. Emitted by the antifraud service when a rule fires. Unknown properties are allowed for forward compatibility.",
+  "type": "object",
+  "required": [
+    "alert_id",
+    "schema_version",
+    "rule",
+    "merchant_id",
+    "payment_id",
+    "triggered_by_event_id",
+    "occurred_at",
+    "details"
+  ],
+  "properties": {
+    "alert_id": {
+      "description": "Deterministic id: '<rule>:<triggered_by_event_id>'. Reprocessing the same event yields the same alert_id.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "rule": {
+      "type": "string",
+      "enum": ["amount_outlier", "payment_burst", "refund_excess"]
+    },
+    "merchant_id": {
+      "description": "Restaurant identifier. Also the Kafka record key.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "payment_id": {
+      "description": "Payment of the event that triggered the alert.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "triggered_by_event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "occurred_at": {
+      "description": "occurred_at of the triggering event, ISO-8601 in UTC.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "details": {
+      "description": "Rule-specific numbers that explain why the alert fired.",
+      "type": "object"
+    }
+  }
+}

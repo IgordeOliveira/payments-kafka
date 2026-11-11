@@ -1,0 +1,22 @@
+# Node
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Java
+target/
+*.class
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Local env and logs
+.env
+.env.local
+*.log

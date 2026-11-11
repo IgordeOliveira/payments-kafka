@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://payments-kafka.local/contracts/payment-event.v1.schema.json",
+  "title": "PaymentEvent",
+  "description": "Value of topic pix.payments.v1. One event per step of a Pix payment lifecycle. Unknown properties are allowed for forward compatibility.",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "occurred_at",
+    "payment_id",
+    "merchant_id",
+    "sequence",
+    "amount_cents",
+    "currency"
+  ],
+  "properties": {
+    "event_id": {
+      "description": "Unique id of this event. Idempotency key for consumers.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "payment.created",
+        "payment.confirmed",
+        "payment.expired",
+        "payment.refunded"
+      ]
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "occurred_at": {
+      "description": "When the event happened, ISO-8601 in UTC.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "payment_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "merchant_id": {
+      "description": "Restaurant identifier. Also the Kafka record key.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "sequence": {
+      "description": "Position of the event in the payment lifecycle: created=1, confirmed or expired=2, refunded=3.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3
+    },
+    "amount_cents": {
+      "description": "Payment amount in cents. Refunds are always for the full amount.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "currency": {
+      "const": "BRL"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "event_type": { "const": "payment.created" } },
+        "required": ["event_type"]
+      },
+      "then": { "properties": { "sequence": { "const": 1 } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": { "enum": ["payment.confirmed", "payment.expired"] }
+        },
+        "required": ["event_type"]
+      },
+      "then": { "properties": { "sequence": { "const": 2 } } }
+    },
+    {
+      "if": {
+        "properties": { "event_type": { "const": "payment.refunded" } },
+        "required": ["event_type"]
+      },
+      "then": { "properties": { "sequence": { "const": 3 } } }
+    }
+  ]
+}

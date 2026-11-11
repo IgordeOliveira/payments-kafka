@@ -1,0 +1,27 @@
+schema: spec-driven
+
+context: |
+  Study project: a Pix payment event pipeline on Kafka, running locally with Docker Compose.
+  docs/architecture.md is the source of truth for shared conventions (topics, event contract,
+  outbox table, HTTP API, ports, environment variables, repository layout). Read it before
+  writing or applying any change, and update it in the same pull request if a shared
+  convention must change.
+  All code, identifiers, comments, commit messages, documentation and READMEs are in English.
+  Stack: Java 21 + Spring Boot 3 (Maven) for payment-api and simulator; Node.js 22 + TypeScript
+  with @confluentinc/kafka-javascript for consumers; Debezium outbox event router; JSON Schema
+  contracts in contracts/.
+  Each change owns its own directory (see "Repository layout") and must not edit files owned
+  by another change. Changes are implemented in parallel on separate branches.
+  Automated tests use Testcontainers (random ports); they never depend on the Compose stack.
+
+rules:
+  tasks:
+    - Every task states how its completion is verified
+  design:
+    - Reference docs/architecture.md instead of restating shared conventions
+
+operations:
+  apply:
+    guidance:
+      - Do not archive the change; the coordinator archives after the pull request is merged
+      - Tick each task in tasks.md as it is completed

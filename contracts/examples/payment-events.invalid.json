@@ -1,0 +1,99 @@
+[
+  {
+    "reason": "missing event_id",
+    "event": {
+      "event_type": "payment.created",
+      "schema_version": 1,
+      "occurred_at": "2026-11-11T14:03:20.100Z",
+      "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+      "merchant_id": "merchant-007",
+      "sequence": 1,
+      "amount_cents": 4590,
+      "currency": "BRL"
+    }
+  },
+  {
+    "reason": "unknown event_type",
+    "event": {
+      "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e11",
+      "event_type": "payment.teleported",
+      "schema_version": 1,
+      "occurred_at": "2026-11-11T14:03:20.100Z",
+      "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+      "merchant_id": "merchant-007",
+      "sequence": 1,
+      "amount_cents": 4590,
+      "currency": "BRL"
+    }
+  },
+  {
+    "reason": "amount_cents is a string",
+    "event": {
+      "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e12",
+      "event_type": "payment.created",
+      "schema_version": 1,
+      "occurred_at": "2026-11-11T14:03:20.100Z",
+      "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+      "merchant_id": "merchant-007",
+      "sequence": 1,
+      "amount_cents": "45.90",
+      "currency": "BRL"
+    }
+  },
+  {
+    "reason": "amount_cents is not positive",
+    "event": {
+      "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e13",
+      "event_type": "payment.created",
+      "schema_version": 1,
+      "occurred_at": "2026-11-11T14:03:20.100Z",
+      "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+      "merchant_id": "merchant-007",
+      "sequence": 1,
+      "amount_cents": 0,
+      "currency": "BRL"
+    }
+  },
+  {
+    "reason": "sequence does not match event_type (confirmed must be 2)",
+    "event": {
+      "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e14",
+      "event_type": "payment.confirmed",
+      "schema_version": 1,
+      "occurred_at": "2026-11-11T14:03:27.512Z",
+      "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+      "merchant_id": "merchant-007",
+      "sequence": 1,
+      "amount_cents": 4590,
+      "currency": "BRL"
+    }
+  },
+  {
+    "reason": "unsupported currency",
+    "event": {
+      "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e15",
+      "event_type": "payment.created",
+      "schema_version": 1,
+      "occurred_at": "2026-11-11T14:03:20.100Z",
+      "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+      "merchant_id": "merchant-007",
+      "sequence": 1,
+      "amount_cents": 4590,
+      "currency": "USD"
+    }
+  },
+  {
+    "reason": "empty merchant_id",
+    "event": {
+      "event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e16",
+      "event_type": "payment.created",
+      "schema_version": 1,
+      "occurred_at": "2026-11-11T14:03:20.100Z",
+      "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+      "merchant_id": "",
+      "sequence": 1,
+      "amount_cents": 4590,
+      "currency": "BRL"
+    }
+  }
+]

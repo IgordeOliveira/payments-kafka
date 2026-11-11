@@ -1,0 +1,32 @@
+[
+  {
+    "alert_id": "amount_outlier:5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e01",
+    "schema_version": 1,
+    "rule": "amount_outlier",
+    "merchant_id": "merchant-007",
+    "payment_id": "0b9d6c0e-7f1e-4c7a-8a55-2a8f4f1f6c42",
+    "triggered_by_event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e01",
+    "occurred_at": "2026-11-11T14:03:20.100Z",
+    "details": { "amount_cents": 990000, "merchant_mean_cents": 5210, "factor": 5 }
+  },
+  {
+    "alert_id": "payment_burst:5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e21",
+    "schema_version": 1,
+    "rule": "payment_burst",
+    "merchant_id": "merchant-012",
+    "payment_id": "7c1b1f6e-2f5d-4a0b-9a3e-6d2b8e4c1a90",
+    "triggered_by_event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e21",
+    "occurred_at": "2026-11-11T14:05:00.000Z",
+    "details": { "payments_in_window": 31, "window_ms": 10000, "limit": 30 }
+  },
+  {
+    "alert_id": "refund_excess:5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e31",
+    "schema_version": 1,
+    "rule": "refund_excess",
+    "merchant_id": "merchant-003",
+    "payment_id": "3e2a9b7c-1d4f-4b6a-8c9d-0e1f2a3b4c5d",
+    "triggered_by_event_id": "5f0c1c1e-3a52-4d0a-9d0e-1f3b5a7c9e31",
+    "occurred_at": "2026-11-11T14:06:10.000Z",
+    "details": { "refunds_in_window": 6, "window_ms": 60000, "limit": 5 }
+  }
+]
