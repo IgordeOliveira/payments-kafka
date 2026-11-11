@@ -1,10 +1,9 @@
-# Spec Delta
+# local-environment Specification
 
 ## Purpose
-
 Provides the one-command local environment (Kafka, Kafka Connect with Debezium, Kafka UI and Postgres) in which every component of the pipeline runs and can be observed.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Infrastructure starts with one command
 Running `docker compose up -d` from the repository root SHALL start Kafka in KRaft mode, Kafka UI, Postgres and Kafka Connect, and all of them SHALL become healthy without manual steps.
@@ -32,7 +31,7 @@ Postgres SHALL run with logical replication enabled and SHALL contain the databa
 - **THEN** user `pix` can connect to each of the three databases and `SHOW wal_level` returns `logical`
 
 ### Requirement: Outbox rows are published to Kafka
-Once the outbox connector is registered, every row inserted into `public.outbox` in database `payments` SHALL be published exactly as one record on `pix.payments.v1`, with the row's `merchant_id` as string key and the row's `payload` as the bare JSON value.
+Once the outbox connector is registered, every row inserted into `public.outbox` in database `payments` SHALL be published to `pix.payments.v1` as a record with the row's `merchant_id` as string key and the row's `payload` as the bare JSON value. Publication is at-least-once: after a Kafka Connect or broker restart a row MAY be published more than once, so consumers dedupe by `event_id`.
 
 #### Scenario: Inserted row becomes an event
 - **WHEN** a row with `merchant_id` `merchant-007` and a valid payment event as `payload` is inserted into `outbox`
@@ -40,7 +39,7 @@ Once the outbox connector is registered, every row inserted into `public.outbox`
 
 #### Scenario: Rows written while Kafka is down are delivered later
 - **WHEN** rows are inserted into `outbox` while the Kafka broker is stopped, and the broker is then started again
-- **THEN** every such row is published to `pix.payments.v1` in insertion order per merchant, with none missing
+- **THEN** every such row is published to `pix.payments.v1` in insertion order per merchant, with none missing (rows published shortly before the outage may appear a second time)
 
 ### Requirement: Connector registration is automatic and repeatable
 Starting the `apps` profile SHALL register the outbox connector after `payment-api` is healthy, and repeating the registration SHALL succeed without creating a duplicate connector.

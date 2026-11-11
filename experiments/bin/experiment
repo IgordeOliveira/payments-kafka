@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# Entry point of the `experiments` container:
+#   docker compose --profile experiments run --rm experiments <command>
+set -euo pipefail
+
+DIR=/workspace/experiments
+
+usage() {
+  cat <<'EOF'
+Failure experiments for the Pix payment pipeline.
+
+Usage (from the repository root, with the pipeline running):
+  docker compose --profile experiments run --rm experiments <command>
+
+Experiments (each one resets the pipeline, runs a bounded simulation, breaks
+something on purpose and ends with PASS or FAIL):
+  duplicates      duplicated events are applied once          experiments/01-duplicates.md
+  kill-consumer   a consumer killed mid-processing loses nothing  experiments/02-kill-consumer.md
+  kafka-outage    Kafka down while the API keeps accepting payments  experiments/03-kafka-outage.md
+  replay          resetting reconciliation rebuilds identical balances  experiments/04-replay.md
+  all             the four experiments in sequence, then a summary
+
+Other commands:
+  selftest        checks each helper against the running stack (no assertions on the pipeline)
+  reset           empties the topics and the consumers' state (what every experiment does first)
+  shell [-c cmd]  a bash shell with the tooling (kcat, jq, psql, Kafka CLI, docker)
+  help            this text
+
+Environment:
+  SABOTAGE=1      break the property on purpose, to see the experiment print FAIL
+                  (pass it with: run --rm -e SABOTAGE=1 experiments <name>)
+
+Warning: every experiment deletes and recreates the pix.* topics and clears the
+consumers' state, and stops the default simulator. Restart it afterwards with
+  docker compose --profile apps start simulator
+EOF
+}
+
+cmd="${1:-help}"
+[ $# -gt 0 ] && shift
+
+case "$cmd" in
+  help | -h | --help)
+    usage
+    ;;
+  duplicates | kill-consumer | kafka-outage | replay | selftest)
+    exec bash "$DIR/scripts/$cmd.sh" "$@"
+    ;;
+  all)
+    results=()
+    status=0
+    for name in duplicates kill-consumer kafka-outage replay; do
+      rc=0
+      bash "$DIR/scripts/$name.sh" || rc=$?
+      if [ "$rc" -eq 0 ]; then results+=("PASS  $name"); else results+=("FAIL  $name (exit $rc)"); status=1; fi
+    done
+    printf '\nSummary\n'
+    printf '  %s\n' "${results[@]}"
+    exit "$status"
+    ;;
+  reset)
+    # shellcheck source=../lib/common.sh
+    source "$DIR/lib/common.sh"
+    require_stack
+    reset_pipeline
+    ;;
+  shell)
+    exec bash "$@"
+    ;;
+  *)
+    usage >&2
+    echo "unknown command: $cmd" >&2
+    exit 2
+    ;;
+esac

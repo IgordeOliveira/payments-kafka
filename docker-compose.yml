@@ -258,6 +258,26 @@ services:
       KAFKA_GROUP_ID: reconciliation
       DATABASE_URL: postgres://pix:pix@postgres:5432/reconciliation
 
+  # ---------------------------------------------------------------- experiments (profile: experiments)
+
+  # One-shot tooling container for the failure experiments (experiments/README.md):
+  #   docker compose --profile experiments run --rm experiments help
+  # It drives the stack through the Docker socket, so it can stop Kafka or kill
+  # a consumer. Acceptable for a local study project only.
+  experiments:
+    profiles: [experiments]
+    build:
+      context: ./experiments
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      PGHOST: postgres
+      PGUSER: pix
+      PGPASSWORD: pix
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/workspace:ro
+    restart: "no"
+
 volumes:
   kafka-data:
   postgres-data:

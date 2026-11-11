@@ -263,6 +263,14 @@ Payment representation:
   workspaces) with `dockerfile: services/<name>/Dockerfile`.
 - Consumers declare no `container_name` and no host ports so they can be scaled:
   `docker compose --profile apps up -d --scale reconciliation=3`.
+- The `experiments` profile holds one tooling service, `experiments` (build
+  context `experiments/`, the Kafka image plus `bash`, `jq`, `kcat`, `psql`
+  and the Docker CLI). It mounts the repository read-only at `/workspace` and
+  the Docker socket, and runs `experiments/bin/experiment`:
+  `docker compose --profile experiments run --rm experiments <command>`.
+  Experiments delete and recreate the `pix.*` topics, reset the consumers'
+  state and run a bounded simulator in a container named `exp-simulator`
+  (see `experiments/README.md`).
 
 ## Environment variables
 

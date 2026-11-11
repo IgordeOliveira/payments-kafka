@@ -3,7 +3,7 @@
 Spring Boot service that generates the lifecycle of Pix payments for many
 merchants at a configurable rate. Shared conventions (topic, key, event
 contract, payment API, ports) are in [docs/architecture.md](../../docs/architecture.md);
-the design is in [openspec/changes/add-payment-simulator](../../openspec/changes/add-payment-simulator/).
+the design is in [openspec/changes/archive/2026-11-11-add-payment-simulator](../../openspec/changes/archive/2026-11-11-add-payment-simulator/).
 
 Java 21, Spring Boot 3.5, Spring Kafka, Maven wrapper. HTTP port `8082`.
 
