@@ -1,0 +1,29 @@
+{
+  "name": "payments-kafka",
+  "private": true,
+  "type": "module",
+  "description": "Pix payment event pipeline on Kafka (study project): npm workspaces root for the TypeScript packages and services.",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "workspaces": [
+    "packages/*",
+    "services/antifraud",
+    "services/notification",
+    "services/reconciliation"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run build && npm run test --workspaces --if-present",
+    "lint": "eslint . && npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.5",
+    "eslint": "^10.14.0",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.2",
+    "vitest": "~4.0.18"
+  }
+}
