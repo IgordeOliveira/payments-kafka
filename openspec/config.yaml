@@ -15,6 +15,11 @@ context: |
   Automated tests use Testcontainers (random ports); they never depend on the Compose stack.
 
 rules:
+  proposal:
+    - Before writing the proposal, invoke the "grilling" skill and interview the user, grounded in docs/architecture.md and the existing specs, until scope, behavior and acceptance criteria are unambiguous; do not draft any artifact until the user confirms a shared understanding
+    - Record the decisions reached during the grilling in the proposal
+  specs:
+    - If writing the delta specs raises a new open question (an unclear requirement or scenario), go back to the "grilling" skill and ask the user before assuming an answer
   tasks:
     - Every task states how its completion is verified
   design:
