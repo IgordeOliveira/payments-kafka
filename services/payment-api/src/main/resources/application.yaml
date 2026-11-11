@@ -1,0 +1,28 @@
+# Defaults for a local run (see docs/architecture.md, "Environment variables").
+# Every value can be overridden with an environment variable through Spring's
+# relaxed binding: SERVER_PORT, SPRING_DATASOURCE_URL, SPRING_DATASOURCE_USERNAME,
+# SPRING_DATASOURCE_PASSWORD.
+server:
+  port: 8081
+
+spring:
+  application:
+    name: payment-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payments
+    username: pix
+    password: pix
+  flyway:
+    locations: classpath:db/migration
+  jackson:
+    # Reject 45.5 or "4590" for amount_cents instead of silently coercing them.
+    deserialization:
+      accept-float-as-int: false
+    mapper:
+      allow-coercion-of-scalars: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
