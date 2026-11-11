@@ -1,0 +1,29 @@
+{
+  "name": "@payments-kafka/reconciliation",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reconciliation consumer: payment state, ledger and merchant balances in Postgres, applied exactly once in effect.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "start": "node dist/main.js",
+    "cli": "node dist/cli.js"
+  },
+  "dependencies": {
+    "@payments-kafka/consumer-runtime": "*",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@testcontainers/postgresql": "^12.2.1",
+    "@types/pg": "^8.23.1",
+    "testcontainers": "^12.2.1"
+  }
+}
