@@ -167,7 +167,7 @@ Implemented once in `packages/consumer-runtime` and used by all consumers.
 | `x-original-topic` / `x-original-partition` / `x-original-offset` | retry, DLQ | where the record first came from |
 | `x-error-message` | retry, DLQ | last error message (truncated) |
 | `x-dlq-group` | DLQ | consumer group that gave up |
-| `x-dlq-reason` | DLQ | `invalid_message` or `retries_exhausted` |
+| `x-dlq-reason` | DLQ | `invalid_message`, `non_retryable` (handler threw a non-retryable error) or `retries_exhausted` |
 | `x-dlq-attempts` | DLQ | retries performed before giving up |
 
 Retrying breaks per-merchant ordering for the retried record. Handlers must

@@ -1,0 +1,18 @@
+# Build context is the repository root for the TypeScript services
+# (npm workspaces). Keep host artifacts out of the images: node_modules built
+# on the host (Windows/macOS binaries of librdkafka) must never be copied.
+**/node_modules
+**/dist
+**/coverage
+**/*.tsbuildinfo
+**/*.log
+**/.env
+**/.env.*
+.git
+.idea
+.vscode
+.claude
+openspec
+docs
+experiments
+**/target

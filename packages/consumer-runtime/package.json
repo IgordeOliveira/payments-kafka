@@ -1,0 +1,50 @@
+{
+  "name": "@payments-kafka/consumer-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared Kafka consumer runtime: manual commits, contract validation, retry with backoff, dead letter routing and graceful shutdown.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "default": "./dist/testing/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pretest": "npm run build",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration"
+  },
+  "dependencies": {
+    "@confluentinc/kafka-javascript": "1.11.0",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "pino": "^10.4.0"
+  },
+  "peerDependencies": {
+    "testcontainers": "^12.2.1"
+  },
+  "peerDependenciesMeta": {
+    "testcontainers": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "testcontainers": "^12.2.1"
+  }
+}
