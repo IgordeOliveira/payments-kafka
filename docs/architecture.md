@@ -256,6 +256,9 @@ Payment representation:
   outbox table).
 - Java services: build context is the service directory
   (`services/payment-api`, `services/simulator`), with a `Dockerfile` in it.
+  Both expose `GET /actuator/health` on `SERVER_PORT`, and their runtime image
+  must contain `curl` (`eclipse-temurin:21-jre` does): Compose healthchecks
+  call it, and `connector-init` waits for `payment-api` to be healthy.
 - TypeScript services: build context is the **repository root** (npm
   workspaces) with `dockerfile: services/<name>/Dockerfile`.
 - Consumers declare no `container_name` and no host ports so they can be scaled:
