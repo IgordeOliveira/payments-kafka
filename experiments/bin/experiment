@@ -20,6 +20,9 @@ something on purpose and ends with PASS or FAIL):
   replay          resetting reconciliation rebuilds identical balances  experiments/04-replay.md
   all             the four experiments in sequence, then a summary
 
+Load experiment (not part of `all`: results depend on the machine):
+  load            k6 load on the API, then pipeline consistency and drain time  experiments/05-load.md
+
 Other commands:
   selftest        checks each helper against the running stack (no assertions on the pipeline)
   reset           empties the topics and the consumers' state (what every experiment does first)
@@ -43,7 +46,7 @@ case "$cmd" in
   help | -h | --help)
     usage
     ;;
-  duplicates | kill-consumer | kafka-outage | replay | selftest)
+  duplicates | kill-consumer | kafka-outage | replay | load | selftest)
     exec bash "$DIR/scripts/$cmd.sh" "$@"
     ;;
   all)
