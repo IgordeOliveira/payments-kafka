@@ -13,6 +13,7 @@ asserting a property.
 | Offsets and commits, consumer groups | a consumer killed mid-processing loses nothing | `experiments kill-consumer` · [02-kill-consumer.md](02-kill-consumer.md) |
 | The outbox pattern | Kafka down while the API keeps accepting payments | `experiments kafka-outage` · [03-kafka-outage.md](03-kafka-outage.md) |
 | Reprocessing history by resetting offsets | replay rebuilds identical balances | `experiments replay` · [04-replay.md](04-replay.md) |
+| Throughput, latency and backpressure through the outbox | k6 load on the API; every accepted request reaches the topic and reconciliation (not in `all`) | `experiments load` · [05-load.md](05-load.md) |
 | Partitioning by key and per-merchant ordering | walkthrough | [walkthrough-partitioning.md](walkthrough-partitioning.md) |
 | Consumer groups, lag and rebalancing | walkthrough | [walkthrough-consumer-groups.md](walkthrough-consumer-groups.md) |
 | Retry with backoff and the DLQ | walkthrough | [walkthrough-retry-dlq.md](walkthrough-retry-dlq.md) |
@@ -36,11 +37,15 @@ docker compose --profile experiments run --rm experiments kill-consumer
 docker compose --profile experiments run --rm experiments kafka-outage
 docker compose --profile experiments run --rm experiments replay
 docker compose --profile experiments run --rm experiments all        # the four in sequence
+docker compose --profile experiments run --rm experiments load       # not part of "all"
 ```
 
 The first run builds the image (a minute). Each experiment takes one to three
-minutes. While one runs, watch it in Kafka UI at http://localhost:8080; each
-experiment's document says what to look at.
+minutes. `load` takes about four, pulls the pinned `grafana/k6` image on its
+first run and is deliberately **not part of `all`**: its latency numbers depend
+on your machine (see [05-load.md](05-load.md#tuning-for-your-machine)). While
+one runs, watch it in Kafka UI at http://localhost:8080; each experiment's
+document says what to look at.
 
 Other commands: `selftest` exercises every helper with a tiny run; `reset`
 empties the topics and the consumers' state; `shell` opens a shell with the

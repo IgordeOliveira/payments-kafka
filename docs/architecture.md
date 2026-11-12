@@ -271,6 +271,10 @@ Payment representation:
   Experiments delete and recreate the `pix.*` topics, reset the consumers'
   state and run a bounded simulator in a container named `exp-simulator`
   (see `experiments/README.md`).
+- An experiment may also run a pinned `grafana/k6` container as a sibling on the
+  Compose network `payments-kafka_default`; its script is fed on stdin, not
+  bind-mounted (the daemon resolves bind mounts on the host, where `/workspace`
+  does not exist). Currently the `load` experiment, tag `2.3.0`.
 
 ## Environment variables
 

@@ -25,6 +25,7 @@ real bank, PSP or Pix API.
 | Retry with backoff, dead letter queue | `pix.payments.retry.v1`, `pix.payments.dlq.v1` | [walkthrough: retry and DLQ](experiments/walkthrough-retry-dlq.md) |
 | The outbox pattern (no event lost between DB and Kafka) | payment API + Debezium | [kafka-outage](experiments/03-kafka-outage.md) |
 | Reprocessing history by resetting offsets | reconciliation rebuild | [replay](experiments/04-replay.md) |
+| Throughput, latency and backpressure through the outbox | k6 load on the payment API, then the drain of outbox, Debezium and consumers | [load](experiments/05-load.md) |
 
 ## Architecture
 
@@ -165,6 +166,10 @@ what they do, how they measure, and how to make each one fail on purpose
 | [kill-consumer](experiments/02-kill-consumer.md) | `docker kill` of a reconciliation instance mid-run | every distinct event applied exactly once; `check` passes |
 | [kafka-outage](experiments/03-kafka-outage.md) | `docker stop kafka` for 20 s while the API takes payments | the API keeps answering; every outbox row reaches the topic and reconciliation |
 | [replay](experiments/04-replay.md) | reconciliation state deleted, offsets rewound to 0 | byte-identical balances after the rebuild |
+| [load](experiments/05-load.md) | k6 at 200 iterations/s (about 420 requests/s) on the payment API; not part of `all` | p95 and error rate within thresholds; every accepted request reaches the topic and reconciliation; drain time |
+
+`load` is run on its own (`docker compose --profile experiments run --rm
+experiments load`, about 4 minutes) because its numbers depend on the machine.
 
 ## Components
 
